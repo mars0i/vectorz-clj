@@ -17,6 +17,9 @@
   (:import [mikera.vectorz AVector Vectorz Vector])
   (:import [mikera.arrayz INDArray Array NDArray]))
 
+(set! *warn-on-reflection* true)
+(set! *unchecked-math* true)
+
 ;; note - all the operators are core.matrix operators
 
 (set-current-implementation :vectorz)
@@ -69,6 +72,7 @@
   (is (== 3 (mget (mset (zero-array []) 3)))))
 
 (deftest test-scalar-arrays
+  (is (equals 0 (new-scalar-array :vectorz)))
   (is (equals 3 (scalar-array 3)))
   (is (equals 2 (add 1 (array 1))))
   (is (equals [2 3] (add 1 (array [1 2]))))
@@ -179,7 +183,7 @@
   (is (== -1.0 (det (matrix :vectorz [[0 1] [1 0]])))))
 
 (defn test-round-trip [m]
-  (is (equals m (read-string (.toString m))))
+  (is (equals m (read-string (str m))))
   ;; TODO edn round-tripping?
   )
 
